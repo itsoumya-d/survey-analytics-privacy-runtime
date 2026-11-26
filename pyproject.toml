@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "survey-analytics-privacy-runtime"
+version = "0.1.0"
+description = "Cohort aggregation engine with strict k-anonymity privacy safeguards and analytics generation"
+authors = [{ name = "Soumya Debnath", email = "soumyadebnath1619@gmail.com" }]
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
