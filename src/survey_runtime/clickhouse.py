@@ -37,9 +37,10 @@ class ClickHouseCohortCompiler:
 
         group_by = ", ".join(spec.dimensions)
         rollup_clause = " WITH ROLLUP" if spec.with_rollup else ""
+        select_clause = ",\n    ".join(select_cols)
 
         sql = f"""SELECT
-    {',\n    '.join(select_cols)}
+    {select_clause}
 FROM {self.table_name}
 WHERE survey_id = '{spec.survey_id}'
 GROUP BY {group_by}{rollup_clause}
