@@ -1,32 +1,46 @@
-from typing import List, Dict, Optional, Any
+from typing import List, Dict, Optional
+from pathlib import Path
 from src.survey_runtime.models import SurveyResponse, AggregatedCohort
 from src.survey_runtime.packs import load_country_pack
 
 
 class PrivacyEnforcer:
-    """Enforces k-anonymity thresholds and regulatory disclosure control rules on cohort aggregations."""
+    """Enforces country-specific k-anonymity thresholds on cohort aggregations."""
 
-    def __init__(self, k_threshold: Optional[int] = None, country: str = "base"):
-        self.country = country
-        self.rules = load_country_pack(country)
+    def __init__(
+        self,
+        k_threshold: Optional[int] = None,
+        country: str = "us",
+        packs_dir: Optional[Path] = None
+    ):
+        self.country = country.strip().lower()
+        self.pack_data = load_country_pack(self.country, base_dir=packs_dir)
 
-        # Derive defaults from country pack
-        self.pack_k = 5
+        # Resolve special category k threshold if present in pack
         self.special_category_k = 10
-
-        for rule in self.rules:
-            vals = rule.get("values", {})
-            if "min_k_threshold" in vals:
-                self.pack_k = int(vals["min_k_threshold"])
-            if "special_category_min_k" in vals:
-                self.special_category_k = int(vals["special_category_min_k"])
+        for rule in self.pack_data.get("rules", []):
+            if rule.get("metric") == "special_category_k":
+                self.special_category_k = int(rule["threshold"])
 
         if k_threshold is not None:
             if k_threshold < 1:
                 raise ValueError("k_threshold must be >= 1")
             self.k_threshold = k_threshold
         else:
-            self.k_threshold = self.pack_k
+            resolved = None
+            for rule in self.pack_data.get("rules", []):
+                if rule.get("metric") == "k_anonymity":
+                    resolved = int(rule["threshold"])
+                    break
+            if resolved is None or resolved < 1:
+                raise ValueError(f"No valid k_anonymity rule defined for country '{self.country}'")
+            self.k_threshold = resolved
+
+    def get_rule(self, rule_id: str) -> Dict:
+        for r in self.pack_data.get("rules", []):
+            if r.get("id") == rule_id:
+                return r
+        raise KeyError(f"Rule '{rule_id}' not found in country pack '{self.country}'")
 
     def evaluate_cohort(
         self,
@@ -38,16 +52,15 @@ class PrivacyEnforcer:
         effective_k = self.special_category_k if is_special_category else self.k_threshold
 
         if count < effective_k:
-            reason = f"Cohort size {count} is below privacy threshold k={effective_k} for country pack '{self.country}'"
+            reason = f"Cohort size {count} is below privacy threshold k={effective_k} ({self.country.upper()})"
             if is_special_category:
-                reason += " (special category protection active)"
+                reason += " - special category protection active"
             return AggregatedCohort(
                 demographics=demographics,
                 respondent_count=count,
                 is_anonymized=True,
                 average_scores={},
-                redaction_reason=reason,
-                country=self.country
+                redaction_reason=reason
             )
 
         # Compute averages across numeric score metrics
@@ -68,6 +81,5 @@ class PrivacyEnforcer:
             demographics=demographics,
             respondent_count=count,
             is_anonymized=False,
-            average_scores=averages,
-            country=self.country
+            average_scores=averages
         )

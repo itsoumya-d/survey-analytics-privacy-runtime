@@ -1,35 +1,39 @@
 import json
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Dict, Any, Optional
 
-SUPPORTED_COUNTRIES = {
-    "base": "base",
-    "default": "base",
-    "ie": "ie",
-    "ireland": "ie"
-}
+PACKS_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "packs"
 
 
-def get_project_root() -> Path:
-    curr = Path(__file__).resolve().parent
-    while curr.parent != curr:
-        if (curr / "packs").exists() or (curr / "pyproject.toml").exists():
-            return curr
-        curr = curr.parent
-    return Path.cwd()
+def load_country_pack(country: str, base_dir: Optional[Path] = None) -> Dict[str, Any]:
+    """Loads and validates rule definitions for a specific country pack."""
+    if not country or not isinstance(country, str) or not country.strip():
+        raise ValueError("Country code must be a non-empty string.")
 
+    code = country.strip().lower()
+    search_dir = base_dir if base_dir is not None else PACKS_DIR
+    pack_path = search_dir / code / "rules.json"
 
-def load_country_pack(country: str = "base") -> List[Dict[str, Any]]:
-    """Loads declarative compliance rules for a specified jurisdiction."""
-    normalized = (country or "base").strip().lower()
-    matched = SUPPORTED_COUNTRIES.get(normalized)
-    if not matched:
-        raise ValueError(f"Unknown country code: '{country}'. Supported: base, ie")
-
-    root = get_project_root()
-    pack_path = root / "packs" / matched / "rules.json"
     if not pack_path.exists():
-        raise FileNotFoundError(f"Country pack rules missing at: {pack_path}")
+        available = sorted([p.name for p in search_dir.iterdir() if p.is_dir()]) if search_dir.exists() else []
+        raise ValueError(f"Unknown country pack: '{country}'. Available packs: {available}")
 
-    with open(pack_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(pack_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception as e:
+        raise ValueError(f"Failed to load country pack '{country}': {e}")
+
+    if "rules" not in data or not isinstance(data["rules"], list):
+        raise ValueError(f"Invalid country pack format in {pack_path}: missing 'rules' array.")
+
+    return data
+
+
+def get_country_rule(country: str, rule_id: str, base_dir: Optional[Path] = None) -> Dict[str, Any]:
+    """Retrieves a specific rule by ID from the specified country pack."""
+    pack = load_country_pack(country, base_dir=base_dir)
+    for rule in pack.get("rules", []):
+        if rule.get("id") == rule_id:
+            return rule
+    raise KeyError(f"Rule '{rule_id}' not found in country pack '{country}'.")

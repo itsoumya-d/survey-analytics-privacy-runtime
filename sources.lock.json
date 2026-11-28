@@ -1,25 +1,45 @@
 {
-  "base": [
+  "sources": [
     {
-      "source_url": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
-      "authority": "National Institute of Standards and Technology (NIST)",
-      "retrieved_at": "2026-11-28"
-    }
-  ],
-  "ie": [
-    {
-      "source_url": "https://www.dataprotection.ie/en/guidance-landing/anonymisation-and-pseudonymisation",
-      "authority": "Data Protection Commission (DPC Ireland)",
+      "url": "https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html",
+      "country": "us",
+      "title": "HHS HIPAA Guidance Regarding Methods for De-identification of Protected Health Information",
       "retrieved_at": "2026-11-28"
     },
     {
-      "source_url": "https://www.cso.ie/en/aboutus/organisationandmethodology/statisticalmethodology/statisticaldisclosurecontrol/",
-      "authority": "Central Statistics Office (CSO Ireland)",
+      "url": "https://abdm.gov.in/home/ndhm_policy",
+      "country": "in",
+      "title": "Ayushman Bharat Digital Mission (ABDM) Health Data Management Policy Section 27.2",
       "retrieved_at": "2026-11-28"
     },
     {
-      "source_url": "https://www.workplacerelations.ie/en/guidance/data-protection-in-the-workplace/",
-      "authority": "Workplace Relations Commission (WRC Ireland)",
+      "url": "https://www.meity.gov.in/content/digital-personal-data-protection-act-2023",
+      "country": "in",
+      "title": "Ministry of Electronics and Information Technology - Digital Personal Data Protection Act 2023",
+      "retrieved_at": "2026-11-28"
+    },
+    {
+      "url": "https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf",
+      "country": "in",
+      "title": "CERT-In Cyber Security Directions under Section 70B of IT Act 2000",
+      "retrieved_at": "2026-11-28"
+    },
+    {
+      "url": "https://www.dataprotection.ie/en/guidance-landing/anonymisation-and-pseudonymisation",
+      "country": "ie",
+      "title": "Data Protection Commission (DPC Ireland) Anonymisation and Pseudonymisation Guidance",
+      "retrieved_at": "2026-11-28"
+    },
+    {
+      "url": "https://www.cso.ie/en/aboutus/organisationandmethodology/statisticalmethodology/statisticaldisclosurecontrol/",
+      "country": "ie",
+      "title": "Central Statistics Office (CSO Ireland) Statistical Disclosure Control Guidelines",
+      "retrieved_at": "2026-11-28"
+    },
+    {
+      "url": "https://www.workplacerelations.ie/en/guidance/data-protection-in-the-workplace/",
+      "country": "ie",
+      "title": "Workplace Relations Commission (WRC Ireland) Data Protection in the Workplace Guidance",
       "retrieved_at": "2026-11-28"
     }
   ]
