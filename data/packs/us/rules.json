@@ -1,0 +1,14 @@
+{
+  "country": "us",
+  "name": "United States",
+  "rules": [
+    {
+      "id": "us-hipaa-k-anonymity",
+      "metric": "k_anonymity",
+      "threshold": 5,
+      "source_url": "https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html",
+      "checked_on": "2026-11-28",
+      "description": "Minimum cell suppression threshold for de-identification under HIPAA expert determination guidelines."
+    }
+  ]
+}
