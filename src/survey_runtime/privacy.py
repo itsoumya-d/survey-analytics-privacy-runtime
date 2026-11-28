@@ -3,6 +3,7 @@ from pathlib import Path
 from src.survey_runtime.models import SurveyResponse, AggregatedCohort
 from src.survey_runtime.packs import load_country_pack
 
+
 class PrivacyEnforcer:
     """Enforces country-specific k-anonymity thresholds on cohort aggregations."""
 
@@ -14,7 +15,13 @@ class PrivacyEnforcer:
     ):
         self.country = country.strip().lower()
         self.pack_data = load_country_pack(self.country, base_dir=packs_dir)
-        
+
+        # Resolve special category k threshold if present in pack
+        self.special_category_k = 10
+        for rule in self.pack_data.get("rules", []):
+            if rule.get("metric") == "special_category_k":
+                self.special_category_k = int(rule["threshold"])
+
         if k_threshold is not None:
             if k_threshold < 1:
                 raise ValueError("k_threshold must be >= 1")
@@ -38,16 +45,22 @@ class PrivacyEnforcer:
     def evaluate_cohort(
         self,
         demographics: Dict[str, str],
-        responses: List[SurveyResponse]
+        responses: List[SurveyResponse],
+        is_special_category: bool = False
     ) -> AggregatedCohort:
         count = len(responses)
-        if count < self.k_threshold:
+        effective_k = self.special_category_k if is_special_category else self.k_threshold
+
+        if count < effective_k:
+            reason = f"Cohort size {count} is below privacy threshold k={effective_k} ({self.country.upper()})"
+            if is_special_category:
+                reason += " - special category protection active"
             return AggregatedCohort(
                 demographics=demographics,
                 respondent_count=count,
                 is_anonymized=True,
                 average_scores={},
-                redaction_reason=f"Cohort size {count} is below privacy threshold k={self.k_threshold} ({self.country.upper()})"
+                redaction_reason=reason
             )
 
         # Compute averages across numeric score metrics

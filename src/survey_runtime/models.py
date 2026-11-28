@@ -15,3 +15,4 @@ class AggregatedCohort:
     is_anonymized: bool
     average_scores: Dict[str, float] = field(default_factory=dict)
     redaction_reason: str = ""
+    country: str = "base"

@@ -23,6 +23,24 @@
       "country": "in",
       "title": "CERT-In Cyber Security Directions under Section 70B of IT Act 2000",
       "retrieved_at": "2026-11-28"
+    },
+    {
+      "url": "https://www.dataprotection.ie/en/guidance-landing/anonymisation-and-pseudonymisation",
+      "country": "ie",
+      "title": "Data Protection Commission (DPC Ireland) Anonymisation and Pseudonymisation Guidance",
+      "retrieved_at": "2026-11-28"
+    },
+    {
+      "url": "https://www.cso.ie/en/aboutus/organisationandmethodology/statisticalmethodology/statisticaldisclosurecontrol/",
+      "country": "ie",
+      "title": "Central Statistics Office (CSO Ireland) Statistical Disclosure Control Guidelines",
+      "retrieved_at": "2026-11-28"
+    },
+    {
+      "url": "https://www.workplacerelations.ie/en/guidance/data-protection-in-the-workplace/",
+      "country": "ie",
+      "title": "Workplace Relations Commission (WRC Ireland) Data Protection in the Workplace Guidance",
+      "retrieved_at": "2026-11-28"
     }
   ]
 }
