@@ -1,0 +1,26 @@
+{
+  "base": [
+    {
+      "source_url": "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
+      "authority": "National Institute of Standards and Technology (NIST)",
+      "retrieved_at": "2026-11-28"
+    }
+  ],
+  "ie": [
+    {
+      "source_url": "https://www.dataprotection.ie/en/guidance-landing/anonymisation-and-pseudonymisation",
+      "authority": "Data Protection Commission (DPC Ireland)",
+      "retrieved_at": "2026-11-28"
+    },
+    {
+      "source_url": "https://www.cso.ie/en/aboutus/organisationandmethodology/statisticalmethodology/statisticaldisclosurecontrol/",
+      "authority": "Central Statistics Office (CSO Ireland)",
+      "retrieved_at": "2026-11-28"
+    },
+    {
+      "source_url": "https://www.workplacerelations.ie/en/guidance/data-protection-in-the-workplace/",
+      "authority": "Workplace Relations Commission (WRC Ireland)",
+      "retrieved_at": "2026-11-28"
+    }
+  ]
+}
