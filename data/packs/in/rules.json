@@ -1,0 +1,30 @@
+{
+  "country": "in",
+  "name": "India",
+  "rules": [
+    {
+      "id": "in-abdm-k-anonymity",
+      "metric": "k_anonymity",
+      "threshold": 10,
+      "source_url": "https://abdm.gov.in/home/ndhm_policy",
+      "checked_on": "2026-11-28",
+      "description": "Minimum cell aggregation threshold for de-identified health data under ABDM Health Data Management Policy Section 27.2."
+    },
+    {
+      "id": "in-dpdp-minor-age-threshold",
+      "metric": "minor_age_years",
+      "threshold": 18.0,
+      "source_url": "https://www.meity.gov.in/content/digital-personal-data-protection-act-2023",
+      "checked_on": "2026-11-28",
+      "description": "Age threshold requiring verifiable parental consent under Digital Personal Data Protection Act 2023 Section 9."
+    },
+    {
+      "id": "in-cert-log-retention-days",
+      "metric": "log_retention_days",
+      "threshold": 180.0,
+      "source_url": "https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf",
+      "checked_on": "2026-11-28",
+      "description": "Mandatory ICT and system access log retention duration within Indian jurisdiction under CERT-In Directions 2022 Section 5."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "sources": [
+    {
+      "url": "https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html",
+      "country": "us",
+      "title": "HHS HIPAA Guidance Regarding Methods for De-identification of Protected Health Information",
+      "retrieved_at": "2026-11-28"
+    },
+    {
+      "url": "https://abdm.gov.in/home/ndhm_policy",
+      "country": "in",
+      "title": "Ayushman Bharat Digital Mission (ABDM) Health Data Management Policy Section 27.2",
+      "retrieved_at": "2026-11-28"
+    },
+    {
+      "url": "https://www.meity.gov.in/content/digital-personal-data-protection-act-2023",
+      "country": "in",
+      "title": "Ministry of Electronics and Information Technology - Digital Personal Data Protection Act 2023",
+      "retrieved_at": "2026-11-28"
+    },
+    {
+      "url": "https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf",
+      "country": "in",
+      "title": "CERT-In Cyber Security Directions under Section 70B of IT Act 2000",
+      "retrieved_at": "2026-11-28"
+    }
+  ]
+}

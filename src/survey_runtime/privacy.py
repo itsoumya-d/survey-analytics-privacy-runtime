@@ -1,13 +1,39 @@
-from typing import List, Dict
+from typing import List, Dict, Optional
+from pathlib import Path
 from src.survey_runtime.models import SurveyResponse, AggregatedCohort
+from src.survey_runtime.packs import load_country_pack
 
 class PrivacyEnforcer:
-    """Enforces k-anonymity thresholds on cohort aggregations."""
+    """Enforces country-specific k-anonymity thresholds on cohort aggregations."""
 
-    def __init__(self, k_threshold: int = 5):
-        if k_threshold < 1:
-            raise ValueError("k_threshold must be >= 1")
-        self.k_threshold = k_threshold
+    def __init__(
+        self,
+        k_threshold: Optional[int] = None,
+        country: str = "us",
+        packs_dir: Optional[Path] = None
+    ):
+        self.country = country.strip().lower()
+        self.pack_data = load_country_pack(self.country, base_dir=packs_dir)
+        
+        if k_threshold is not None:
+            if k_threshold < 1:
+                raise ValueError("k_threshold must be >= 1")
+            self.k_threshold = k_threshold
+        else:
+            resolved = None
+            for rule in self.pack_data.get("rules", []):
+                if rule.get("metric") == "k_anonymity":
+                    resolved = int(rule["threshold"])
+                    break
+            if resolved is None or resolved < 1:
+                raise ValueError(f"No valid k_anonymity rule defined for country '{self.country}'")
+            self.k_threshold = resolved
+
+    def get_rule(self, rule_id: str) -> Dict:
+        for r in self.pack_data.get("rules", []):
+            if r.get("id") == rule_id:
+                return r
+        raise KeyError(f"Rule '{rule_id}' not found in country pack '{self.country}'")
 
     def evaluate_cohort(
         self,
@@ -21,7 +47,7 @@ class PrivacyEnforcer:
                 respondent_count=count,
                 is_anonymized=True,
                 average_scores={},
-                redaction_reason=f"Cohort size {count} is below privacy threshold k={self.k_threshold}"
+                redaction_reason=f"Cohort size {count} is below privacy threshold k={self.k_threshold} ({self.country.upper()})"
             )
 
         # Compute averages across numeric score metrics
